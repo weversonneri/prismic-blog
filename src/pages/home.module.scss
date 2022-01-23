@@ -1,1 +1,58 @@
-// TODO
+.container {
+  margin-left: 372px;
+  margin-top: 65px;
+
+  .post {
+    margin-bottom: 48px;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: bold;
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+    }
+
+    p {
+      font-size: 1.125rem;
+      margin-top: 0.5rem;
+    }
+
+    .postStatus {
+      display: flex;
+      gap: 1.75rem;
+      margin-top: 24px;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .loadPostsButton {
+    color: var(--highlight);
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    margin-top: 64px;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+
+    &.loadPostsButtonDisabled {
+      filter: brightness(0.6);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.footer {
+  height: 80px;
+}

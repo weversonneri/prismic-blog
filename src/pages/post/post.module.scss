@@ -1,1 +1,52 @@
-// TODO
+.postBanner {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+
+  margin-top: 40px;
+}
+
+.postContainer {
+  margin-top: 80px;
+  margin-left: 372px;
+  max-width: 720px;
+
+  .postHeader {
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .postStats {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+
+      margin-top: 24px;
+
+      p {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        font-size: 14px;
+      }
+    }
+  }
+
+  .postContent {
+    margin-top: 64px;
+
+    .heading {
+      font-size: 2.25rem;
+      font-weight: bold;
+      text-align: justify;
+    }
+
+    .text {
+      margin-top: 60px;
+      font-size: 1.125rem;
+      text-align: justify;
+    }
+  }
+}
