@@ -9,7 +9,8 @@ import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import { formatDate } from '../../utils';
+import { formatDate, formatFullDate } from '../../utils';
+import { UtterancesComments } from '../../components/UtterancesComments';
 
 interface Post {
   first_publication_date: string | null;
@@ -35,11 +36,26 @@ interface Content {
   }[];
 }
 
-interface PostProps {
-  post: Post;
+interface PaginationProps {
+  uid?: string;
+  data?: {
+    title: string;
+  };
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+interface PostProps {
+  post: Post;
+  prevpost: PaginationProps;
+  nextpost: PaginationProps;
+  editDate: string | null;
+}
+
+export default function Post({
+  post,
+  prevpost,
+  nextpost,
+  editDate,
+}: PostProps): JSX.Element {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -62,8 +78,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       <Head>
         <title>spacetraveling</title>
       </Head>
-
-      <main>
+      <header>
         <figure>
           <img
             src={post.data.banner.url}
@@ -71,23 +86,28 @@ export default function Post({ post }: PostProps): JSX.Element {
             className={styles.postBanner}
           />
         </figure>
-
+      </header>
+      <main className={styles.container}>
         <article className={styles.postContainer}>
           <header className={styles.postHeader}>
             <h1>{post.data.title}</h1>
             <div className={styles.postStats}>
-              <p>
-                <FiCalendar />
-                {formatDate(post.first_publication_date)}
-              </p>
-              <p>
-                <FiUser />
-                {post.data.author}
-              </p>
-              <p>
-                <FiClock />
-                {totalLetters(post.data.content)}
-              </p>
+              <div>
+                <p>
+                  <FiCalendar />
+                  {formatDate(post.first_publication_date)}
+                </p>
+                <p>
+                  <FiUser />
+                  {post.data.author}
+                </p>
+                <p>
+                  <FiClock />
+                  {totalLetters(post.data.content)}
+                </p>
+              </div>
+
+              {editDate && <small>* editado em {editDate}</small>}
             </div>
           </header>
           {post.data.content.map(item => (
@@ -100,6 +120,31 @@ export default function Post({ post }: PostProps): JSX.Element {
             </div>
           ))}
         </article>
+        <footer className={styles.footer}>
+          <hr />
+
+          <div className={styles.postsNavigation}>
+            <div className={styles.prevPost}>
+              {prevpost.data && (
+                <>
+                  <h3>{prevpost.data.title}</h3>
+                  <a href={`/post/${prevpost.uid}`}>Post anterior</a>
+                </>
+              )}
+            </div>
+
+            <div className={styles.nextPost}>
+              {nextpost.data && (
+                <>
+                  <h3>{nextpost.data.title}</h3>
+                  <a href={`/post/${nextpost.uid}`}>Próximo post</a>
+                </>
+              )}
+            </div>
+          </div>
+
+          <UtterancesComments />
+        </footer>
       </main>
     </>
   );
@@ -127,9 +172,38 @@ export const getStaticProps: GetStaticProps = async context => {
   const { slug } = context.params;
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('post', String(slug), {});
+  console.log('🚀 ~ file: [slug].tsx ~ line 172 ~ response', response);
+
+  const editDate =
+    response.last_publication_date !== response.first_publication_date
+      ? formatFullDate(response.first_publication_date)
+      : null;
+
+  const prevpost =
+    (
+      await prismic.query([Prismic.Predicates.at('document.type', 'post')], {
+        pageSize: 1,
+        after: `${response.id}`,
+        orderings: '[document.first_publication_date]',
+      })
+    ).results[0] || 'undefined';
+
+  const nextpost =
+    (
+      await prismic.query([Prismic.Predicates.at('document.type', 'post')], {
+        pageSize: 1,
+        after: `${response.id}`,
+        orderings: '[document.first_publication_date desc]',
+      })
+    ).results[0] || 'undefined';
 
   return {
-    props: { post: response },
+    props: {
+      post: response,
+      prevpost,
+      nextpost,
+      editDate,
+    },
     revalidate: 60 * 30, // 30 minutes
   };
 };

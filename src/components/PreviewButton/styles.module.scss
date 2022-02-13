@@ -1,0 +1,22 @@
+.aside {
+  color: var(--background);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: justify;
+
+  padding: 1.125rem;
+  border-radius: 4px;
+
+  display: flex;
+  justify-content: center;
+
+  margin-top: 5.5rem;
+  width: 100%;
+
+  background: var(--heading);
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}

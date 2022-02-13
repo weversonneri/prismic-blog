@@ -6,47 +6,114 @@
   margin-top: 40px;
 }
 
-.postContainer {
-  margin-top: 80px;
-  margin-left: 372px;
-  max-width: 720px;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  .postHeader {
-    h1 {
-      font-size: 3rem;
-      font-weight: bold;
+  margin-top: 80px;
+
+  .postContainer {
+    max-width: 720px;
+
+    .postHeader {
+      h1 {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+
+      .postStats {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        div {
+          display: flex;
+          gap: 24px;
+          align-items: center;
+
+          margin-top: 24px;
+
+          p {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            font-size: 14px;
+          }
+        }
+
+        small {
+          color: var(--info);
+          font-size: 0.875rem;
+          font-weight: normal;
+          font-style: italic;
+        }
+      }
     }
 
-    .postStats {
-      display: flex;
-      gap: 24px;
-      align-items: center;
+    .postContent {
+      margin-top: 64px;
 
-      margin-top: 24px;
+      .heading {
+        font-size: 2.25rem;
+        font-weight: bold;
+        text-align: justify;
+      }
 
-      p {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        font-size: 14px;
+      .text {
+        margin-top: 60px;
+        font-size: 1.125rem;
+        text-align: justify;
       }
     }
   }
 
-  .postContent {
-    margin-top: 64px;
+  .footer {
+    display: flex;
+    flex-direction: column;
 
-    .heading {
-      font-size: 2.25rem;
-      font-weight: bold;
-      text-align: justify;
+    width: 100%;
+    max-width: 720px;
+    margin-top: 3.75rem;
+
+    hr {
+      width: 100%;
+      border: 1px solid #d7d7d7;
+      opacity: 0.1;
+
+      margin-bottom: 3rem;
     }
 
-    .text {
-      margin-top: 60px;
-      font-size: 1.125rem;
-      text-align: justify;
+    .postsNavigation {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5rem;
+
+      h3 {
+        color: var(--heading);
+        font: 1.125rem;
+        font-weight: 400;
+
+        margin-bottom: 0.5rem;
+      }
+
+      a {
+        color: var(--highlight);
+        font-size: 1rem;
+        font-weight: 600;
+
+        &:hover {
+          filter: brightness(0.8);
+        }
+      }
+
+      .prevPost {
+        text-align: start;
+      }
+      .nextPost {
+        text-align: end;
+      }
     }
   }
 }
